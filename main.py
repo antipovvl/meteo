@@ -3,7 +3,7 @@
 #
 #  main.py
 #  
-#  Copyright 2022 Valery <valery@laptop>
+#  Copyright 2022 Valery <valery-antipov@yandex.ru>
 #  
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -44,8 +44,8 @@ def dev_scan():
 		aht = AHT10(i2c)
 		time.sleep(3)
 		bmp180 = BMP180(i2c)
-		bmp180.oversample_sett = 3
-		bmp180.baseline = 101325
+		//bmp180.oversample_sett = 3
+		//bmp180.baseline = 101325
 		pres = round((bmp180.pressure)/133.322)
 		temp = aht.temperature
 		hum = round(aht.relative_humidity,1)
@@ -63,15 +63,15 @@ def client_send(dtemp, pres, hum):
 		client=MQTTClient(mac, server='narodmon.ru', port=1883, user='username', password='password')
 		client.connect()
 		print('Temperature: ', dtemp)
-		client.publish('valery/esp8266/temperature', str(dtemp))
+		client.publish('valery/device/temperature', str(dtemp))
 		time.sleep(3)
 		client.connect()
 		print('Pressure: ', pres)
-		client.publish('valery/esp8266/pressure', str(pres))
+		client.publish('NAME/device/pressure', str(pres))
 		time.sleep(3)
 		client.connect()
 		print('Humidity: ', hum)
-		client.publish('valery/esp8266/humidity', str(hum))
+		client.publish('NAME/device/humidity', str(hum))
 		time.sleep(3)
 	except OSError:
 		print("Нет Передачи!")
